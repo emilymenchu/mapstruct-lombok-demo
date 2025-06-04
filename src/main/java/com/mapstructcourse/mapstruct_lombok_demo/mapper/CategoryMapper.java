@@ -10,19 +10,26 @@ import java.util.List;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public abstract class CategoryMapper {
-    private final CategoryRepository categoryRepository;
-
     @Autowired
-    protected CategoryMapper(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
-    }
+    private CategoryRepository categoryRepository;
 
+    @Mappings({
+            @Mapping(source = "id", target = "categoryId"),
+            @Mapping(source = "name", target = "categoryName"),
+    })
     abstract GetCategory toGetCategory(Category category);
     abstract List<GetCategory> toGetCategoryList(List<Category> categories);
 
     Category toCategory(GetCategory getCategory){
         if (getCategory == null) return null;
-        Category category = categoryRepository.findById(getCategory.getId())
+        Category category = categoryRepository.findById(getCategory.getCategoryId()).orElse(null);
+
+        if (category == null) return null;
+
+        category.setId(getCategory.getCategoryId());
+        category.setName(getCategory.getCategoryName());
+
+        return category;
     }
-    List<Category> toCategoryList(List<GetCategory> getCategories);
+    abstract List<Category> toCategoryList(List<GetCategory> getCategories);
 }

@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class GetCategory {
-    private long id;
-    private String name;
+    private long categoryId;
+    private String categoryName;
 }

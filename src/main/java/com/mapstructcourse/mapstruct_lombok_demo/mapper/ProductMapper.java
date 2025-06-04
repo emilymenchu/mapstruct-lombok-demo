@@ -10,12 +10,17 @@ import java.util.List;
 public interface ProductMapper {
 
     @Mappings({
-        @Mapping(source = "creationDate", target = "creationDate", dateFormat = "yyyy-MM-dd HH:mm:ss")
+        @Mapping(source = "id", target = "productId"),
+        @Mapping(source = "name", target = "productName"),
+        @Mapping(source = "creationDate", target = "creationDate", dateFormat = "yyyy-MM-dd HH:mm:ss"),
+        @Mapping(source = "category", target = "productCategory"),
+        @Mapping(source = "price", target = "price", numberFormat = "$#0.00"),
     })
     GetProduct toGetDTO(Product product);
     List<GetProduct> toGetDtoList(List<Product> products);
 
     @InheritInverseConfiguration
+//    @Mapping(target = "creationDate", ignore = true)
     Product toProduct(GetProduct getProduct);
     List<Product> toProductList(List<GetProduct> getProductList);
 }
